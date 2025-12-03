@@ -275,5 +275,42 @@ SELECT * FROM evenement
 WHERE idEvenement in ( SELECT idEvenement FROM organiser_evenement)
 ORDER BY dateEvenment DESC LIMIT 5;
 
+-- Lister les membres du BDE qui ont rejoint avant une date donnée.
+SELECT * FROM membrebde 
+WHERE dateAdhesion < "2024-02-1";
+
+-- Compter le nombre total de participants à un événement donné.
+SELECT COUNT(idParticipant) from inscire_evenement;
+
+-- Lister les participants inscrits à plusieurs événements.
+SELECT idParticipant, COUNT(idEvenement) AS nbrEvenement
+FROM inscire_evenement 
+GROUP BY idParticipant
+HAVING  COUNT(idEvenement) > 1;
+
+-- Afficher les événements ayant lieu dans un mois donné.
+SELECT * FROM evenement WHERE MONTH(dateEvenment) = 12;
+
+-- Lister les événements n’ayant pas encore de participants inscrits.
+SELECT idEvenement from evenement WHERE idEvenement NOT IN (
+      SELECT idEvenement from inscire_evenement);
+
+-- Afficher les détails du sponsor ayant contribué le plus au budget global des événements.
+
+
+-- Compter le nombre de sponsors associés à chaque événement.
+SELECT idEvenement , COUNT(idSponsor) AS nbrSponsor FROM   financier_evenement
+GROUP BY idSponsor
+;
+
+-- Lister les événements qui ont au moins 10 participants.
+SELECT idEvenement , COUNT(idSponsor) AS nbrSponsor FROM   financier_evenement
+GROUP BY idSponsor
+HAVING COUNT(idSponsor) >= 2;
+
+-- Afficher les détails des membres du BDE impliqués dans l’organisation d’événements spécifiques
+SELECT * FROM membrebde WHERE idMombreBDE in (
+      SELECT idMombreBDE FROM organiser_evenement WHERE idEvenement = 2
+      );
 
 
